@@ -10,19 +10,37 @@ const App = (props) => {
   }
  
   const handleVotes = () => {
-    const newVotes = [...votes];
-    newVotes[selected]++;
-    setVotes(newVotes);
+    const newVotes = [...votes]
+    newVotes[selected]++
+    setVotes(newVotes)
+  }
+
+  const firstVotedPos = () => {
+      let max = votes[0]
+      let maxPos = 0
+      for(let i=1;i<votes.length;i++){
+          if(votes[i] > max){
+              max = votes[i]
+              maxPos = i
+          }
+      }
+      return maxPos
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
-      <p>has votes {votes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
       <div>
         <button onClick={handleVotes}>vote</button>
         <button onClick={handleAnecdotes}>next anecdote</button>
-      </div>   
+      </div> 
+      <h1>Anecdote with most votes</h1> 
+      {props.anecdotes[firstVotedPos()]}
+      <p>has {votes[firstVotedPos()]} votes</p> 
+      <div>
+      </div>
    </div>
   )
 }
