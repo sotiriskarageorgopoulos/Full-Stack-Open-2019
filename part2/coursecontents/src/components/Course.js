@@ -1,6 +1,7 @@
-import React from 'react';
-import Part from './Part';
+import React from 'react' 
+import Part from './Part'
 import Header from './Header'
+import Total from './Total'
 
 const Content = ({parts}) => {
     return (
@@ -15,6 +16,7 @@ const Course = ({name,parts}) => {
         <div>
           <Header name={name}/>
           <Content parts={parts}/>
+          <Total parts={parts}/>
         </div>
     )
 }
