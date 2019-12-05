@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/filter'
 import PersonForm from './components/personForm'
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
-
+  const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filteredValue, setFilteredValue ] = useState('')
   const [ isFiltered, setIsFiltered ] = useState(false)
+
+  useEffect(()=>{
+    axios.get('http://localhost:3001/persons')
+         .then(response => setPersons(response.data))
+  },[])
 
   const handleName = (event) => {
       setNewName(event.target.value)
@@ -33,13 +33,18 @@ const App = () => {
         }
         else {
           const person = {
-              id: persons.length+1,
               name: newName,
-              tel: newNumber
+              number: newNumber,
+              id: persons.length+1,
           }
-          setPersons(persons.concat(person))
+          
           setNewName('')
           setNewNumber('')
+
+          axios.post('http://localhost:3001/persons',person)
+               .then( response =>{
+                  setPersons(persons.concat(response.data))
+               })
         }
   }
 
@@ -51,7 +56,7 @@ const App = () => {
              if(p.name.toLowerCase().includes(filteredValue.toLowerCase()) 
              || p.name.toUpperCase().includes(filteredValue.toUpperCase())) 
              { 
-               return (<p key={p.id}> {p.name} {p.tel} </p>) 
+               return (<p key={p.id}> {p.name} {p.number} </p>) 
              }
              return ''
           })}
@@ -60,7 +65,7 @@ const App = () => {
       else {
         return (
            <>
-            {persons.map(p=>(<p key={p.id}> {p.name} {p.tel} </p>))}
+            {persons.map(p=>(<p key={p.id}> {p.name} {p.number} </p>))}
            </>
            )}
   }
