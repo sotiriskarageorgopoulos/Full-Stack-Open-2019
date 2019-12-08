@@ -48,6 +48,18 @@ const App = () => {
         }
   }
 
+  const handleDelButton = (event) => {
+     event.preventDefault()
+     const id = event.target.value
+     let person = persons.filter(p => p.id == id)
+     if(person !== null){
+        if(window.confirm(`Delete ${person[0].name} ?`)){
+          servicePerson.deletePerson(id) 
+          window.location.reload(true);
+        }
+      }
+  }
+
   const display = () =>{
       if(isFiltered) {
         return (
@@ -56,7 +68,7 @@ const App = () => {
              if(p.name.toLowerCase().includes(filteredValue.toLowerCase()) 
              || p.name.toUpperCase().includes(filteredValue.toUpperCase())) 
              { 
-               return (<p key={p.id}> {p.name} {p.number} </p>) 
+               return (<p key={p.id}> {p.name} {p.number} <button value={p.id} onClick={handleDelButton}>delete</button></p>) 
              }
              return ''
           })}
@@ -65,7 +77,7 @@ const App = () => {
       else {
         return (
            <>
-            {persons.map(p=>(<p key={p.id}> {p.name} {p.number} </p>))}
+            {persons.map(p=>(<p key={p.id}> {p.name} {p.number}<button value={p.id} onClick={handleDelButton}>delete</button></p>))}
            </>
            )}
   }
