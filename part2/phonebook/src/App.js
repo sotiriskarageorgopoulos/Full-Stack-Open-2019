@@ -12,6 +12,7 @@ const App = () => {
   const [ filteredValue, setFilteredValue ] = useState('')
   const [ isFiltered, setIsFiltered ] = useState(false)
   const [ addNotification, setAddNotification ] = useState('')
+  const [ deleteNotification, setDeleteNotification ] = useState('')
 
   useEffect(()=>{
     servicePerson.getAllPersons()
@@ -76,7 +77,10 @@ const App = () => {
      let person = persons.filter(p => p.id == id)
      if(person !== null){
         if(window.confirm(`Delete ${person[0].name} ?`)){
-          servicePerson.deletePerson(id) 
+          servicePerson.deletePerson(id)
+                       .then(person => {
+                          setDeleteNotification(`Information of ${person.name} has already been removed from the server`)
+                        }) 
           window.location.reload(true);
         }
       }
@@ -114,7 +118,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={addNotification} />
+      <Notification add={addNotification} delete={deleteNotification}/>
       <Filter filteredValue={filteredValue} handleFilter={handleFilter}/>
       <h3>Add a new</h3>
       <PersonForm addName={addName}
