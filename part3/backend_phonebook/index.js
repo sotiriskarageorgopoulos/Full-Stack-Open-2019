@@ -56,11 +56,20 @@ let persons = [
     const id = Number(request.params.id)
     persons = persons.filter(note => note.id !== id)
     response.status(204).end()
-  })
+  }) 
 
   
   app.post('/api/persons',(req,res) => {
       let bodyReq = req.body
+      let isExistsName = persons.filter(p => p.name.toLowerCase() === bodyReq.name.toLowerCase() 
+                                       || p.name.toUpperCase() === bodyReq.name.toUpperCase())
+      if((bodyReq.name.trim().length === 0 || bodyReq.number.trim().length === 0) && isExistsName.length === 0) {
+        res.status(400).json({error: "name is missing or number is missing or both are missing!!!"})
+      }
+      else if(isExistsName.length !== 0) {
+        res.status(400).json({error: "The name already exists in the phonebook!!!"})
+      }
+      else {
       const person = {
         name: bodyReq.name,
         number: bodyReq.number,
@@ -68,6 +77,7 @@ let persons = [
       }
       persons = persons.concat(person)
       res.json(person)
+     }
   })
 
   const PORT = 3001
