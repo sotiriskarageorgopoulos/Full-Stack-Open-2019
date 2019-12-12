@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
 
 let persons = [
     {
@@ -29,11 +31,11 @@ let persons = [
     }
   ]
 
-  app.get('/api/persons',(req,res)=>{
+  app.get('/api/persons',(req,res) => {
       res.json(persons)
   })
 
-  app.get('/api/persons/:id',(req,res)=>{
+  app.get('/api/persons/:id',(req,res) => {
       const id = Number(req.params.id)
       let person = persons.find(p=>p.id === id)
       if(person){
@@ -44,7 +46,7 @@ let persons = [
       }
   })
 
-  app.get('/info',(req,res)=>{
+  app.get('/info',(req,res) => {
      const requestTime = new Date().toUTCString()
      let entriesInfo = `Phonebook has info for ${persons.length} people`
      res.send(`<p>${entriesInfo}</p><p>${requestTime}</p>`) 
@@ -56,8 +58,24 @@ let persons = [
     response.status(204).end()
   })
 
+  
+  app.post('/api/persons',(req,res) => {
+      let bodyReq = req.body
+      const person = {
+        name: bodyReq.name,
+        number: bodyReq.number,
+        id: generateId()
+      }
+      persons = persons.concat(person)
+      res.json(person)
+  })
+
   const PORT = 3001
 
-  app.listen(PORT,()=>{
+  app.listen(PORT,() => {
       console.log(`Server running on port: ${PORT}`)
   })
+
+  const generateId = () => {
+    return Math.floor(Math.random()*100000000)
+  }
