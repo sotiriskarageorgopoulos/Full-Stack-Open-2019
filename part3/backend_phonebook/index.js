@@ -33,6 +33,12 @@ let persons = [
       res.json(persons)
   })
 
+  app.get('/info',(req,res)=>{
+     const requestTime = new Date().toUTCString()
+     let entriesInfo = `Phonebook has info for ${persons.length} people`
+     res.send(`<p>${entriesInfo}</p><p>${requestTime}</p>`) 
+  })
+
   const PORT = 3001
 
   app.listen(PORT,()=>{
