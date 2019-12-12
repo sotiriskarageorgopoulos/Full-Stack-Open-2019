@@ -50,6 +50,12 @@ let persons = [
      res.send(`<p>${entriesInfo}</p><p>${requestTime}</p>`) 
   })
 
+  app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(note => note.id !== id)
+    response.status(204).end()
+  })
+
   const PORT = 3001
 
   app.listen(PORT,()=>{
