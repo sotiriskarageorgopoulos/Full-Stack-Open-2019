@@ -23,30 +23,6 @@ app.use(morgan(function (tokens, req, res) {
 }))
 app.use(bodyParser.json())
 
-let persons = [
-    {
-        name: "Arto Hellas",
-        number: "040-1234569",
-        id: 1
-    }, {
-        name: "Ada Lovelace",
-        number: "39-44-5323523690",
-        id: 2
-    }, {
-        name: "Dan Abramov",
-        number: "123456789087",
-        id: 3
-    }, {
-        name: "Mary Poppendieck",
-        number: "39-23-6423122",
-        id: 4
-    }, {
-        name: "Sotiris",
-        number: "62722728282",
-        id: 5
-    }
-]
-
 app.get('/api/persons', (req, res) => {
     phoneBook
         .find({})
@@ -57,6 +33,18 @@ app.get('/api/persons', (req, res) => {
             console.log(error)
             response.status(404).end()
         })
+})
+
+app.get('/info',(req,res) => {
+  const requestTime = new Date().toUTCString()
+  phoneBook.count({}, function(err, c) {
+    if (err) {
+      console.log(err);
+    } else {
+      let entriesInfo = `Phonebook has info for ${c} people`
+      res.send(`<p>${entriesInfo}</p><p>${requestTime}</p>`) 
+    }
+  });
 })
 
 app.get('/api/persons/:id', (req, res) => {
