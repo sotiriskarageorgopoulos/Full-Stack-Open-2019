@@ -95,6 +95,15 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (req, res, next) => {
+  phoneBook
+  .findOneAndUpdate({name:req.body.name},{number:req.body.number},{new: true})
+    .then(p => {
+      res.json(p)
+    })
+    .catch(error => next(error))
+})
+
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
