@@ -14,9 +14,14 @@ const phonebookSchema =  mongoose.Schema({
     name:{
       type:String,
       unique:true,
-      required:true
+      required:true,
+      minlength:3
     },
-    number:Number,
+    number:{
+      type:Number,
+      minlength:8,
+      required:true, 
+    },
     id:Number
 })
 
