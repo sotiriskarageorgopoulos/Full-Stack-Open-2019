@@ -20,9 +20,35 @@ const mostBlogs = (blogs) => {
   return _.maxBy(authors, 'blogs')
 }
 
+const mostLikes = (blogs) => {
+    if (blogs.length === 0) return null
+    let blogObj = _.chain(blogs)
+    .groupBy('author')
+    .map((value, key) => ({ author: key, info: value }))
+    .value()
+    let sumOfLikes = new Array(blogObj.length).fill(0)
+    let author = []
+    for(let i=0; i< blogObj.length;i++){
+        author[i] = blogObj[i].author
+        for(let j=0; j<blogObj[i].info.length;j++){
+             sumOfLikes[i] += blogObj[i].info[j].likes 
+        }
+    }
+    let pos=0
+    let maxLikes = sumOfLikes[pos]
+    for(let i=pos+1; i< blogObj.length;i++){
+        if(maxLikes < sumOfLikes[i]){
+            maxLikes = sumOfLikes[i]
+            pos = i
+        }
+    }
+    return {author:author[pos],likes:maxLikes}
+  }
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }

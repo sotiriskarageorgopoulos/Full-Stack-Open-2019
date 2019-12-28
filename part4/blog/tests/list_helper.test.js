@@ -99,3 +99,11 @@ describe('The function returns the author who has the largest amount of blogs.',
         blogs:3
       })
 })
+
+describe('The function returns the author, whose blog posts have the largest amount of likes.',()=>{
+  const result = listHelper.mostLikes(listWithBlogs)
+  expect(result).toEqual({
+    author: "Edsger W. Dijkstra",
+    likes: 17
+  })
+})
