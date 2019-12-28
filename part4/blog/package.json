@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "nodemon index.js",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "test": "jest --verbose",
+    "lint":"eslint --init"
   },
   "author": "Sotiris Karageorgopoulos",
   "license": "MIT",
@@ -21,6 +22,11 @@
     "mongoose": "^5.8.3"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "jest": "^24.9.0",
     "nodemon": "^2.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
