@@ -45,10 +45,17 @@ const mostLikes = (blogs) => {
     return {author:author[pos],likes:maxLikes}
   }
 
+
+ const blogsInDb = async () => {
+    const blogs = await Blog.find({});
+    return blogs.map(b => b.toJSON());
+  };
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
+  blogsInDb
 }
